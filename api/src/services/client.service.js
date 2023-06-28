@@ -74,7 +74,10 @@ class ClientService extends BaseService {
       await this.applyPenalty(clientId, penaltyMonths);
     }
 
-    await _cameraService.update(cameraId, { status: "available" });
+    await _cameraService.update(cameraId, {
+      status: "available",
+      returnDate: {},
+    });
     await _clientRepository.update(clientId, { rentedCamera: {} });
 
     return {

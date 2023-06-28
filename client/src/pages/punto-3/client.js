@@ -27,6 +27,25 @@ function ClientPage() {
     await deleteRequest({ patch: "client", id: clientId });
   };
 
+  const returnCamera = async (clientId, cameraId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/v1/api/client/return/${clientId}/${cameraId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch items");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   useEffect(() => {
     handleGetItems();
   }, []);
@@ -52,6 +71,7 @@ function ClientPage() {
           setModalRent={setModalRent}
           modalRent={modalRent}
           getFn={handleGetItems}
+          returnCamera={returnCamera}
           optionsTableHeader={["Name", "rentedCamera", "penaltyMonths"]}
           optionsTableBody={["name", "rentedCamera", "penaltyMonths"]}
           deleteProperty="_id"

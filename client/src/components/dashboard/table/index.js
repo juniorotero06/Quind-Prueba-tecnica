@@ -30,6 +30,7 @@ export default function TableDashboard({
   optionsTableHeader,
   optionsTableBody,
   deleteProperty,
+  returnCamera,
   isClient,
 }) {
   const [page, setPage] = useState(0);
@@ -122,7 +123,12 @@ export default function TableDashboard({
                         </Button>
                       </TableCell>
                       <TableCell>
-                        <Button variant="contained" onClick={() => {}}>
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            returnCamera(row["_id"], row["rentedCamera"]);
+                          }}
+                        >
                           Devolver Camara
                         </Button>
                       </TableCell>
