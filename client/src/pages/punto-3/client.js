@@ -41,6 +41,7 @@ function ClientPage() {
       if (!response.ok) {
         throw new Error("Failed to fetch items");
       }
+      handleGetItems();
     } catch (error) {
       console.error("Error:", error);
     }

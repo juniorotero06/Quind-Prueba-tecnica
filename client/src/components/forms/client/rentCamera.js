@@ -29,8 +29,12 @@ const RentCameraForm = ({ getFn, client }) => {
     validationSchema: validationRentCameraSchema,
     onSubmit: async (values) => {
       try {
+        const selectedCamera = cameras.find(
+          (camera) => camera._id === values.rentedCamera
+        );
+
         const response = await fetch(
-          `http://localhost:3001/v1/api/client/rent/${client._id}/${values.rentedCamera}`,
+          `http://localhost:3001/v1/api/client/rent/${client._id}/${selectedCamera._id}`,
           {
             method: "GET",
             headers: {
@@ -38,9 +42,11 @@ const RentCameraForm = ({ getFn, client }) => {
             },
           }
         );
+
         if (!response.ok) {
           throw new Error("Failed to fetch items");
         }
+        getFn();
       } catch (error) {
         console.error("Error:", error);
       }
@@ -63,13 +69,9 @@ const RentCameraForm = ({ getFn, client }) => {
           helperText={formik.touched.rentedCamera && formik.errors.rentedCamera}
         >
           {cameras?.map((camera) => (
-            <>
-              <MenuItem
-                key={camera._id}
-                value={camera._id}
-              >{`${camera.brand} / ${camera.model}`}</MenuItem>
-              ;
-            </>
+            <MenuItem key={camera._id} value={camera._id}>
+              {`${camera.brand} / ${camera.model}`}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>

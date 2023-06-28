@@ -76,9 +76,9 @@ class ClientService extends BaseService {
 
     await _cameraService.update(cameraId, {
       status: "available",
-      returnDate: {},
+      returnDate: null,
     });
-    await _clientRepository.update(clientId, { rentedCamera: {} });
+    await _clientRepository.update(clientId, { rentedCamera: null });
 
     return {
       message: "La cámara ha sido devuelta exitosamente.",
