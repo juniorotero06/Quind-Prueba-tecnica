@@ -24,6 +24,8 @@ export default function TableDashboard({
   setItemSelected,
   setModalEdit,
   modalEdit,
+  modalRent,
+  setModalRent,
   getFn,
   optionsTableHeader,
   optionsTableBody,
@@ -109,7 +111,13 @@ export default function TableDashboard({
                   {isClient ? (
                     <>
                       <TableCell>
-                        <Button variant="contained" onClick={() => {}}>
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            setItemSelected(row);
+                            setModalRent(!modalRent);
+                          }}
+                        >
                           Rentar Camara
                         </Button>
                       </TableCell>

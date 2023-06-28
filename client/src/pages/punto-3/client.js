@@ -5,6 +5,7 @@ import TableDashboard from "../../components/dashboard/table/index";
 import Modal from "../../components/modal/index";
 import ClientForm from "../../components/forms/client/add";
 import ClientEditForm from "../../components/forms/client/edit";
+import RentCameraForm from "../../components/forms/client/rentCamera";
 import Layout from "../../containers/layout/index";
 
 import { getRequest, deleteRequest } from "../../utils/requests";
@@ -14,6 +15,7 @@ function ClientPage() {
   const [itemSelected, setItemSelected] = useState({});
   const [modal, setModal] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
+  const [modalRent, setModalRent] = useState(false);
 
   const toggleOverlay = (fn, status) => fn(!status);
 
@@ -47,6 +49,8 @@ function ClientPage() {
           setItemSelected={setItemSelected}
           setModalEdit={setModalEdit}
           modalEdit={modalEdit}
+          setModalRent={setModalRent}
+          modalRent={modalRent}
           getFn={handleGetItems}
           optionsTableHeader={["Name", "rentedCamera", "penaltyMonths"]}
           optionsTableBody={["name", "rentedCamera", "penaltyMonths"]}
@@ -69,6 +73,14 @@ function ClientPage() {
         visible={modalEdit}
       >
         <ClientEditForm getFn={handleGetItems} client={itemSelected} />
+      </Modal>
+      <Modal
+        title="Rentar Camara"
+        setFn={setModalRent}
+        toggleOverlay={toggleOverlay}
+        visible={modalRent}
+      >
+        <RentCameraForm getFn={handleGetItems} client={itemSelected} />
       </Modal>
     </Layout>
   );
