@@ -35,6 +35,13 @@ class CameraController {
     const deleteCamera = await _cameraService.delete(cameraId);
     return res.send(deleteCamera);
   }
+
+  startDelayedCamerasCheck(interval) {
+    // Ejecutar la verificación de cámaras retrasadas en un intervalo de tiempo fijo
+    setInterval(async () => {
+      await _cameraService.checkDelayedCameras();
+    }, interval);
+  }
 }
 
 module.exports = CameraController;

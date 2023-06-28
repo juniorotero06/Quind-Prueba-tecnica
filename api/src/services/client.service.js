@@ -37,7 +37,7 @@ class ClientService extends BaseService {
 
   calculateReturnDate() {
     const rentDate = moment();
-    const returnDate = moment(rentDate).add(30, "days");
+    const returnDate = moment(rentDate).add(31, "days");
     return returnDate.toDate();
   }
 

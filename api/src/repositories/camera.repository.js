@@ -10,6 +10,13 @@ class CameraRepository extends BaseRepository {
   async findByIds(cameraIds) {
     return await _camera.find({ _id: { $in: cameraIds } });
   }
+
+  async findRentedCameras(statusCamera, currentDate) {
+    return await _camera.find({
+      status: statusCamera,
+      returnDate: { $lt: currentDate },
+    });
+  }
 }
 
 module.exports = CameraRepository;
