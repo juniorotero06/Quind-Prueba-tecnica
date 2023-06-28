@@ -1,4 +1,5 @@
 const BaseService = require("./base.service");
+const moment = require("moment");
 
 let _clientRepository = null,
   _cameraService = null;
@@ -21,12 +22,23 @@ class ClientService extends BaseService {
 
     this.validateCameraAvailability(camera);
 
-    await _cameraService.update(cameraId, { status: "rented" });
+    const returnCamera = this.calculateReturnDate();
+
+    await _cameraService.update(cameraId, {
+      status: "rented",
+      returnDate: returnCamera,
+    });
     await _clientRepository.update(clientId, { rentedCamera: cameraId });
 
     return {
       message: "La cámara ha sido alquilada al cliente exitosamente.",
     };
+  }
+
+  calculateReturnDate() {
+    const rentDate = moment();
+    const returnDate = moment(rentDate).add(30, "days");
+    return returnDate.toDate();
   }
 
   validateClientRentingCamera(client) {
