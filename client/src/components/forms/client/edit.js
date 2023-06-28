@@ -10,27 +10,13 @@ import {
   InputLabel,
 } from "@mui/material";
 
+import { getRequest, patchRequest } from "../../../utils/requests";
+
 const ClientEditForm = ({ getFn, client }) => {
   const [cameras, setCameras] = React.useState([]);
 
   const getCameras = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/camera/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      setCameras(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setCameras, patch: "camera" });
   };
 
   const formik = useFormik({
@@ -41,20 +27,7 @@ const ClientEditForm = ({ getFn, client }) => {
     },
     validationSchema: validationEditSchema,
     onSubmit: async (values) => {
-      await fetch("http://localhost:3001/v1/api/client/" + client._id, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          getFn();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      await patchRequest({ getFn, values, patch: "client", id: client._id });
     },
   });
 

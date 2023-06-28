@@ -7,6 +7,8 @@ import CameraForm from "../../components/forms/camera/add";
 import CameraEditForm from "../../components/forms/camera/edit";
 import Layout from "../../containers/layout/index";
 
+import { getRequest, deleteRequest } from "../../utils/requests";
+
 function CameraPage() {
   const [formData, setFormData] = useState([]);
   const [itemSelected, setItemSelected] = useState({});
@@ -16,46 +18,11 @@ function CameraPage() {
   const toggleOverlay = (fn, status) => fn(!status);
 
   const handleGetItems = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/camera/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      setFormData(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setFormData, patch: "camera" });
   };
 
   const deleteCamera = async (cameraId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/v1/api/camera/${cameraId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete camera");
-      }
-
-      console.log("camera deleted successfully");
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await deleteRequest({ patch: "camera", id: cameraId });
   };
 
   useEffect(() => {

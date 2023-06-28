@@ -10,8 +10,9 @@ import {
   Select,
 } from "@mui/material";
 
+import { postRequest } from "../../../utils/requests";
+
 const FilmForm = ({ getFn }) => {
-  // useFormik para manejar el estado del formulario y las validaciones
   const formik = useFormik({
     initialValues: {
       brand: "",
@@ -21,20 +22,7 @@ const FilmForm = ({ getFn }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      await fetch("http://localhost:3001/v1/api/film/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          getFn();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      await postRequest({ getFn, values, patch: "film" });
     },
   });
 

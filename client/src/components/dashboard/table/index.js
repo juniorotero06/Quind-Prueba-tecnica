@@ -14,6 +14,7 @@ import {
   TableHead,
   TableRow,
   TablePagination,
+  Button,
 } from "@mui/material";
 import Swal from "sweetalert2";
 
@@ -27,6 +28,7 @@ export default function TableDashboard({
   optionsTableHeader,
   optionsTableBody,
   deleteProperty,
+  isClient,
 }) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -103,6 +105,24 @@ export default function TableDashboard({
                       </TableCell>
                     </>
                   ))}
+
+                  {isClient ? (
+                    <>
+                      <TableCell>
+                        <Button variant="contained" onClick={() => {}}>
+                          Rentar Camara
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button variant="contained" onClick={() => {}}>
+                          Devolver Camara
+                        </Button>
+                      </TableCell>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+
                   <TableCell align="right">
                     <IconButton
                       onClick={() => {

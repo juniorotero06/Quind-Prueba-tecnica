@@ -3,8 +3,9 @@ import { useFormik } from "formik";
 import { validationSchema } from "./formConfig";
 import { TextField, Button } from "@mui/material";
 
+import { postRequest } from "../../../utils/requests";
+
 const StoreForm = ({ getFn }) => {
-  // useFormik para manejar el estado del formulario y las validaciones
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -12,20 +13,7 @@ const StoreForm = ({ getFn }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      await fetch("http://localhost:3001/v1/api/store/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          getFn();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      await postRequest({ getFn, values, patch: "store" });
     },
   });
 

@@ -7,6 +7,8 @@ import FilmForm from "../../components/forms/film/add";
 import FilmEditForm from "../../components/forms/film/edit";
 import Layout from "../../containers/layout/index";
 
+import { getRequest, deleteRequest } from "../../utils/requests";
+
 function FilmPage() {
   const [formData, setFormData] = useState([]);
   const [itemSelected, setItemSelected] = useState({});
@@ -16,45 +18,11 @@ function FilmPage() {
   const toggleOverlay = (fn, status) => fn(!status);
 
   const handleGetItems = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/film/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      setFormData(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setFormData, patch: "film" });
   };
 
   const deleteFilm = async (filmId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/v1/api/film/${filmId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete film");
-      }
-
-      console.log("Film deleted successfully");
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await deleteRequest({ patch: "film", id: filmId });
   };
 
   useEffect(() => {

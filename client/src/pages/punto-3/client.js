@@ -7,6 +7,8 @@ import ClientForm from "../../components/forms/client/add";
 import ClientEditForm from "../../components/forms/client/edit";
 import Layout from "../../containers/layout/index";
 
+import { getRequest, deleteRequest } from "../../utils/requests";
+
 function ClientPage() {
   const [formData, setFormData] = useState([]);
   const [itemSelected, setItemSelected] = useState({});
@@ -16,45 +18,11 @@ function ClientPage() {
   const toggleOverlay = (fn, status) => fn(!status);
 
   const handleGetItems = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/client/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      setFormData(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setFormData, patch: "client" });
   };
 
   const deleteClient = async (clientId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/v1/api/client/${clientId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete client");
-      }
-
-      console.log("client deleted successfully");
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await deleteRequest({ patch: "client", id: clientId });
   };
 
   useEffect(() => {
@@ -83,6 +51,7 @@ function ClientPage() {
           optionsTableHeader={["Name", "rentedCamera", "penaltyMonths"]}
           optionsTableBody={["name", "rentedCamera", "penaltyMonths"]}
           deleteProperty="_id"
+          isClient
         />
       </Paper>
       <Modal

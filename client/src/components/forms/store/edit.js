@@ -9,27 +9,13 @@ import {
   FormControl,
 } from "@mui/material";
 
+import { getRequest, patchRequest } from "../../../utils/requests";
+
 const StoreEditForm = ({ getFn, store }) => {
   const [cameras, setCameras] = useState([]);
 
   const getCameras = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/camera/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      setCameras(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setCameras, patch: "camera" });
   };
 
   useEffect(() => {
@@ -44,20 +30,7 @@ const StoreEditForm = ({ getFn, store }) => {
     },
     validationSchema: validationEditSchema,
     onSubmit: async (values) => {
-      await fetch("http://localhost:3001/v1/api/store/" + store._id, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          getFn();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      await patchRequest({ getFn, values, patch: "store", id: store._id });
     },
   });
 

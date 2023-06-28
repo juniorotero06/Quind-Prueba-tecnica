@@ -10,6 +10,8 @@ import {
   Select,
 } from "@mui/material";
 
+import { patchRequest } from "../../../utils/requests";
+
 const FilmEditForm = ({ getFn, film }) => {
   const formik = useFormik({
     initialValues: {
@@ -19,22 +21,8 @@ const FilmEditForm = ({ getFn, film }) => {
       format: film.format,
     },
     validationSchema: validationEditSchema,
-    onSubmit: (values) => {
-      // Envío de datos al backend
-      fetch("http://localhost:3001/v1/api/film/" + film._id, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          getFn();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+    onSubmit: async (values) => {
+      await patchRequest({ getFn, values, patch: "film", id: film._id });
     },
   });
 

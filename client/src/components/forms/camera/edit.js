@@ -14,28 +14,15 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
+import { getRequest, patchRequest } from "../../../utils/requests";
+
 const CameraEditForm = ({ getFn, camera }) => {
   const [films, setFilms] = React.useState([]);
 
   const getFilms = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/film/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      setFilms(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setFilms, patch: "film" });
   };
+
   const formik = useFormik({
     initialValues: {
       brand: camera.brand,
@@ -47,20 +34,7 @@ const CameraEditForm = ({ getFn, camera }) => {
     },
     validationSchema: validationEditSchema,
     onSubmit: async (values) => {
-      await fetch("http://localhost:3001/v1/api/camera/" + camera._id, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          getFn();
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      await patchRequest({ getFn, values, patch: "camera", id: camera._id });
     },
   });
 

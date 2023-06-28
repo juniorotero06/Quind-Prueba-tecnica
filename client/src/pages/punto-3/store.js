@@ -7,6 +7,8 @@ import StoreForm from "../../components/forms/store/add";
 import StoreEditForm from "../../components/forms/store/edit";
 import Layout from "../../containers/layout/index";
 
+import { getRequest, deleteRequest } from "../../utils/requests";
+
 function StorePage() {
   const [formData, setFormData] = useState([]);
   const [itemSelected, setItemSelected] = useState({});
@@ -16,46 +18,11 @@ function StorePage() {
   const toggleOverlay = (fn, status) => fn(!status);
 
   const handleGetItems = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/v1/api/store/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch items");
-      }
-
-      const data = await response.json();
-      console.log(data);
-      setFormData(data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await getRequest({ setFunction: setFormData, patch: "store" });
   };
 
   const deleteStore = async (storeId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3001/v1/api/store/${storeId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete store");
-      }
-
-      console.log("store deleted successfully");
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await deleteRequest({ patch: "store", id: storeId });
   };
 
   useEffect(() => {
