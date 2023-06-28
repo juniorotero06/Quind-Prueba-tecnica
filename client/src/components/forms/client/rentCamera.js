@@ -9,7 +9,7 @@ import {
   FormControl,
 } from "@mui/material";
 
-import { getRequest, patchRequest } from "../../../utils/requests";
+import { getRequest } from "../../../utils/requests";
 
 const RentCameraForm = ({ getFn, client }) => {
   const [cameras, setCameras] = useState([]);
@@ -28,7 +28,22 @@ const RentCameraForm = ({ getFn, client }) => {
     },
     validationSchema: validationRentCameraSchema,
     onSubmit: async (values) => {
-      await patchRequest({ getFn, values, patch: "client", id: client._id });
+      try {
+        const response = await fetch(
+          `http://localhost:3001/v1/api/client/rent/${client._id}/${values.rentedCamera}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch items");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
   });
 
