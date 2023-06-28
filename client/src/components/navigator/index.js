@@ -16,7 +16,7 @@ import { ListItemButton } from "@mui/material";
 
 const categories = [
   {
-    id: "Prueba Tecnica",
+    id: "Punto 1",
     iconOption: <Icons.School />,
     children: [
       {
@@ -24,6 +24,12 @@ const categories = [
         active: true,
         link: "/punto-1",
       },
+    ],
+  },
+  {
+    id: "Punto 2",
+    iconOption: <Icons.School />,
+    children: [
       {
         id: "Punto 2",
         active: true,
