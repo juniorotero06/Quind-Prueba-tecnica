@@ -2,20 +2,20 @@ class Punto1Controller {
   sortNumbers(req, res) {
     const { integerList } = req.body;
 
-    if (this.containsNegativeNumber(integerList)) {
+    if (Punto1Controller.containsNegativeNumber(integerList)) {
       return res.send({ data: "Los números deben ser positivos" });
     }
 
-    const sortedNumbers = this.sortDescending(integerList);
+    const sortedNumbers = Punto1Controller.sortDescending(integerList);
 
     return res.send({ data: sortedNumbers });
   }
 
-  containsNegativeNumber(numberList) {
+  static containsNegativeNumber(numberList) {
     return numberList.some((number) => parseInt(number) < 0);
   }
 
-  sortDescending(numberList) {
+  static sortDescending(numberList) {
     return [...numberList].sort().reverse().join("");
   }
 }
