@@ -2,13 +2,10 @@ class Punto2Controller {
   findLetterIndices(req, res) {
     const { message } = req.body;
 
-    if (Punto2Controller.containsLetter(message, "a")) {
-      const indices = Punto2Controller.getLetterIndices(message, "a");
-      const shiftedIndices = Punto2Controller.shiftIndices(indices, 1);
-      const responseMessage = Punto2Controller.generateResponseMessage(
-        shiftedIndices,
-        "a"
-      );
+    if (this.containsLetter(message, "a")) {
+      const indices = this.getLetterIndices(message, "a");
+      const shiftedIndices = this.shiftIndices(indices, 1);
+      const responseMessage = this.generateResponseMessage(shiftedIndices, "a");
       return res.send({ message: responseMessage });
     } else {
       return res.send({
@@ -17,11 +14,11 @@ class Punto2Controller {
     }
   }
 
-  static containsLetter(text, letter) {
+  containsLetter(text, letter) {
     return text.includes(letter);
   }
 
-  static getLetterIndices(text, letter) {
+  getLetterIndices(text, letter) {
     const indices = [];
     let index = text.indexOf(letter);
     while (index !== -1) {
@@ -31,11 +28,11 @@ class Punto2Controller {
     return indices;
   }
 
-  static shiftIndices(indices, shift) {
+  shiftIndices(indices, shift) {
     return indices.map((index) => index + shift);
   }
 
-  static generateResponseMessage(indices, letter) {
+  generateResponseMessage(indices, letter) {
     const indicesString = indices.join(", ");
     return `La letra '${letter}' se encuentra en la posición: ${indicesString}`;
   }
